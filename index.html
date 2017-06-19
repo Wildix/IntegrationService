@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Example Integration Service</title>
+
+<script type="text/javascript" src="./dist/Wildix.IntegrationService.js"></script>
+<script type="text/javascript" src="./node_modules/jquery/dist/jquery.min.js"></script>
+
+<script type="text/javascript">
+
+var WIService = new Wildix.IntegrationService({
+    name: "IBMConnections",
+    version: '1.0.0'
+});
+
+
+WIService.on('connection:error', function(){
+    // fired when could not connect to WIService
+    console.warn('WIService not installed or is not running');
+});
+
+WIService.on('ready', function(){
+    // fired when connected and received collaboration status
+    var status = WIService.getCollaborationStatus();
+    if(status == 'disconnected'){
+        console.warn('Collaboration not running');
+    }
+});
+
+WIService.on('collaboration:connected', function(){
+    // fired when detected that the collaboration is connected to WIService
+    console.log('Collaboration connected');
+});
+
+WIService.on('collaboration:disconnected', function(){
+    // fired when detected that the collaboration is disconnected from WIService
+    console.log('Collaboration disconnected');
+});
+
+
+
+
+
+
+WIService.Roster.on('ready', function(){
+    // fired when collaboration connected and module Roster first received roster
+    console.log('Roster ready');
+});
+
+WIService.Roster.on('reset', function(event, roster){
+    // fired when module Roster received all roster items from Collaboration
+    console.log('received new roster', roster);
+});
+
+WIService.Roster.on('update', function(event, user){
+    // fired when updated user or presence
+    console.log('updated user', user);
+});
+
+WIService.Roster.on('delete', function(event, user){
+    // fired when deleted user
+    console.log('removed user', user);
+});
+
+WIService.Roster.on('add', function(event, user){
+    // fired when added user
+    console.log('added user', user);
+});
+
+
+// make subscription to roster data
+WIService.Roster.subscribe();
+WIService.Telephony.subscribe();
+
+
+
+
+
+//GUI processing
+$(document).ready(function(){
+    $('#call').on('click', function(){
+        var status = WIService.getCollaborationStatus();
+        if(status == 'connected'){
+            // make call
+            if($('#number').val() != ''){
+                WIService.Telephony.call($('#number').val());
+            }
+        }else{
+            console.warn('Collaboration not running');
+        }
+    });
+
+    $('#chat').on('click', function(){
+        var status = WIService.getCollaborationStatus();
+        if(status == 'connected'){
+            // open chat
+            if($('#number').val() != ''){
+                WIService.Chat.open($('#number').val());
+            }
+        }else{
+            console.warn('Collaboration not running');
+        }
+    });
+});
+
+
+
+
+
+</script>
+</head>
+<body>
+
+<input type="text" id="number"> <input type="button" id="call" value="Call" /> <input type="button" id="chat" value="Chat" />
+
+</body>
+</html>
