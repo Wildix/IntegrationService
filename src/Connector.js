@@ -5,15 +5,15 @@
 (function universalModuleDefinition(root, factory){
     if (typeof exports == 'object'){
         // CommonJS
-        module.exports = factory(require('ReconnectingWebSocket'), require('EventEmitter'));
+        module.exports = factory(require('ReconnectingWebSocket'), require('underscore'), require('backbone'));
     } else if (typeof define == 'function' && define.amd){
         // AMD
-        define(['ReconnectingWebSocket', 'EventEmitter'], factory);
+        define(['ReconnectingWebSocket', 'underscore', 'backbone'], factory);
     } else if (typeof ReconnectingWebSocket !== 'undefined' && typeof ReconnectingWebSocket !== 'undefined'){
         // Browser
-        root.Connector = factory(ReconnectingWebSocket, EventEmitter);
+        root.Connector = factory(root.ReconnectingWebSocket, root.underscore, root.Backbone);
     }
-}(this, function (ReconnectingWebSocket, EventEmitter){
+}(this, function (ReconnectingWebSocket, _, Backbone){
     'use strict';
     var logger = Logger.get('Connector');
 
@@ -21,7 +21,7 @@
         this.initialize(options);
     }
 
-    extend(Connector.prototype, EventEmitter, {
+    _.extend(Connector.prototype, Backbone.Events, {
 
         _options: {
             debug: false,
@@ -51,7 +51,7 @@
         initialize: function(options){
             logger.info('Initialize', options);
 
-            extend(this._options, options);
+            _.extend(this._options, options);
 
             var port = window.localStorage.getItem('Wildix.IntegrationService.Port');
             if(port){
@@ -131,7 +131,7 @@
                 return;
             }
             if(!message.hasOwnProperty('message')){
-                message = extend({}, {
+                message = _.extend({}, {
                     message: 'E_' + this._authData.app
                 }, message);
             }

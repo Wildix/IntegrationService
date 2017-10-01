@@ -2,6 +2,8 @@
  * entry point
  */
 
+require('plugins/backbone.mixinCompositeModel');
+
 require('Roster');
 require('Chat');
 require('Telephony');

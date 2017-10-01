@@ -5,21 +5,20 @@
 (function universalModuleDefinition(root, factory){
     if (typeof exports == 'object'){
         // CommonJS
-        module.exports = factory(require('Logger'), require('EventEmitter'), require('Connector'));
+        module.exports = factory(require('Logger'), require('underscore'), require('backbone'), require('Connector'));
     } else if (typeof define == 'function' && define.amd){
         // AMD
-        define(['Logger', 'EventEmitter', 'Connector'], factory);
-    } else if (typeof Logger !== 'undefined'){
+        define(['Logger', 'underscore', 'backbone', 'Connector'], factory);
+    } else {
         // Browser
-        root.IntegrationService = factory(Logger, EventEmitter, Connector);
+        root.IntegrationService = factory(root.Logger, root.underscore, root.Backbone, root.Connector);
     }
-}(this, function (Logger, EventEmitter, Connector){
+}(this, function (Logger, _, Backbone, Connector){
     'use strict';
     // enable all logs
     // Wildix.IntegrationService.Logger.setLevel(Wildix.IntegrationService.Logger.DEBUG)
-    // Logger.useDefaults();
-    // Logger.setLevel(Logger.WARN);  // Global logging level.
-    // Logger.setLevel(Logger.DEBUG);  // Global logging level.
+    Logger.useDefaults();
+    Logger.setLevel(Logger.DEBUG);  // Global logging level.
 
     var logger = Logger.get('IntegrationService');
 
@@ -35,7 +34,7 @@
         IntegrationService.Modules[name] = module;
     };
 
-    extend(IntegrationService.prototype, EventEmitter, {
+    _.extend(IntegrationService.prototype, Backbone.Events, {
         _options: {
             app: 'APP_WEBCRM',
             name: 'WebCRM',
@@ -69,7 +68,7 @@
         initialize: function(options){
             logger.info('Initialize Integration service', options);
 
-            extend(this._options, options);
+            _.extend(this._options, options);
 
             this._options.app = 'APP_' + this._options.name.toUpperCase();
 
@@ -110,8 +109,8 @@
         },
 
         _countCollaborationss: 0,
-        _onEventWiservice: function(event, data){
-            logger.info('_onEventWiservice', event, data);
+        _onEventWiservice: function(data){
+            logger.info('_onEventWiservice', data);
             if(data && data.msgdata){
                 if(data.msgdata.type == 'connectionstatus'){
                     if(data.msgdata.disconnected && data.msgdata.disconnected.collaboration){
@@ -137,7 +136,7 @@
             }
         },
 
-        _onMessage: function(event, data){
+        _onMessage: function(data){
             this.trigger(data.msgdata.command, data.msgdata.msgdata);
         },
 

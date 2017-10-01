@@ -5,29 +5,48 @@
 (function universalModuleDefinition(root, factory){
     if (typeof exports == 'object'){
         // CommonJS
-        module.exports = factory(require('IntegrationService'), require('EventEmitter'));
+        module.exports = factory(
+                require('IntegrationService'),
+                require('underscore'),
+                require('backbone'),
+                require('Models/Call')
+        );
     } else if (typeof define == 'function' && define.amd){
         // AMD
-        define(['IntegrationService', 'EventEmitter'], factory);
-    } else if (typeof IntegrationService !== 'undefined' && typeof EventEmitter !== 'undefined'){
+        define(['IntegrationService', 'underscore', 'backbone', 'Models/Call'], factory);
+    } else {
         // Browser
-        root.Connector = factory(IntegrationService, EventEmitter);
+        root.Connector = factory(root.IntegrationService, root.underscore, root.Backbone, root.Models.Call);
     }
-}(this, function (IntegrationService, EventEmitter){
+}(this, function (IntegrationService, _, Backbone, Call){
     'use strict';
     var logger = Logger.get('Telephony');
 
-    IntegrationService.addModule('Telephony', extend({}, EventEmitter, {
+    IntegrationService.addModule('Telephony', Backbone.Collection.extend({
+        model: Call,
 
         _integrationService: null,
         _connection: null,
 
+        constructor: function(IS) {
+            this._integrationService = IS;
+            var args = [];
+            if(arguments.length > 1){
+                args = arguments.slice(1);
+            }
+            Backbone.Collection.apply(this, args);
+        },
+
         initialize: function(IS){
             logger.info('Initialize');
 
-            this._integrationService = IS;
             this._connection = this._integrationService.getConnection();
+
             this._integrationService.on('collaboration:connected', this._onConnectedCollaboration, this);
+            this._integrationService.on('setcalls', this._onSetCalls, this);
+            this._integrationService.on('updatecall', this._onUpdateCall, this);
+            this._integrationService.on('removecall', this._onRemoveCall, this);
+            this._integrationService.on('addcall', this._onAddCall, this);
         },
 
         call: function(number, callback){
@@ -38,20 +57,6 @@
                 }
             };
             this._connection.send(message, callback);
-        },
-
-        _bindEvents: function(){
-            logger.info('_bindEvents');
-            this._integrationService.on('setcalls', this._onSetCalls, this);
-            this._integrationService.on('updatecall', this._onUpdateCall, this);
-            this._integrationService.on('removecall', this._onRemoveCall, this);
-            this._integrationService.on('addcall', this._onAddCall, this);
-        },
-
-        _calls: null,
-
-        getCalls: function(){
-            return this._calls;
         },
 
         _subscribed: false,
@@ -73,11 +78,6 @@
             if(this._needSubscribe){
                 logger.info('Send subscription');
 
-                if(!this._subscribed){
-                    // if first subscribe
-                    this._bindEvents();
-                }
-
                 this._subscribed = true;
 
                 var message = {
@@ -91,65 +91,36 @@
             }
         },
 
-        _find: function(item){
-            var index = -1;
-            for(var i = 0; i < this._calls.length; i++){
-                if(this._calls[i].channel == item.channel){
-                    index = i;
-                    break;
-                }
-            }
-            return index;
-        },
-
         _onConnectedCollaboration: function(){
             this._subscribe();
         },
 
-        _onSetCalls: function(event, calls){
+        _onSetCalls: function(calls){
             logger.info('Received calls:', calls);
 
-            var isFirst = (this._calls === null);
-
-            this._calls = calls;
-
-            if(isFirst){
-                this.trigger('ready', this);
-            }
-
-            this.trigger('reset', this._calls);
+            this.reset(calls);
         },
 
-        _onUpdateCall: function(event, call){
+        _onUpdateCall: function(call){
             logger.info('Update call:', call);
-            if(call && this._calls.length > 0){
-                var index = this._find(call);
-                if(index >= 0){
-                    this._calls[index] = call;
-                    this.trigger('update', call);
-                }
+            var item = this.get(call.channel);
+            if(item){
+                item.set(call);
             }
         },
 
-        _onRemoveCall: function(event, call){
+        _onRemoveCall: function(call){
             logger.info('Removed call:', call);
-            if(call && this._calls.length > 0){
-                var index = this._find(call);
-                if(index >= 0){
-                    this._calls.splice(index, 1);
-                    this.trigger('delete', call);
-                }
+            var item = this.get(call.channel);
+            if(item){
+                this.remove(item);
             }
         },
 
-        _onAddCall: function(event, call){
+        _onAddCall: function(call){
             logger.info('Added call:', call);
-            if(call){
-                var index = this._find(call);
-                if(index == -1){
-                    this._calls.push(call);
-                    this.trigger('add', call);
-                }
+            if(!this.get(call.channel)){
+                this.add(call);
             }
         }
     }));

@@ -2,20 +2,13 @@ module.exports = {
     "debug": true,
     "globals": {
         "define": true,
-        "ReconnectingWebSocket": true,
-        "extend": true,
-        "Logger": true,
-        "IntegrationService": true,
-        "EventEmitter": true,
-        "Connector": true
+        "Logger": true
     },
     "extends": [
-        "standard",
-        "plugin:promise/recommended"
+        "standard"
     ],
     "plugins": [
-        "standard",
-        "promise"
+        "standard"
     ],
     "rules": {
         "semi": ["error", "always"],

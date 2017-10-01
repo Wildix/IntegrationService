@@ -13,6 +13,11 @@ cache:
 
 script: npm run check && npm run build
 
+notifications:
+  email:
+    recipients:
+      - vyacheslav.dobrenko@wildix.com
+    
 group: stable,
 dist: precise,
 os: linux

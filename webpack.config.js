@@ -32,16 +32,14 @@ module.exports = {
     externals: {
         // require("jquery") is external and available
         // on the global var jQuery
-
-        // "jquery": "jQuery"
+        "jquery": "jQuery"
     },
 
     plugins : [
         //new webpack.IgnorePlugin(/^fs/), // disable, fs require
         // load modules as default
         new webpack.ProvidePlugin({
-            'Logger': 'js-logger',
-            'extend': 'extend'
+            'Logger': 'js-logger'
         }),
         /*new webpack.optimize.CommonsChunkPlugin({
             name: 'vendor',

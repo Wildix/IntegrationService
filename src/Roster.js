@@ -5,43 +5,48 @@
 (function universalModuleDefinition(root, factory){
     if (typeof exports == 'object'){
         // CommonJS
-        module.exports = factory(require('IntegrationService'), require('EventEmitter'));
+        module.exports = factory(
+                require('IntegrationService'),
+                require('underscore'),
+                require('backbone'),
+                require('Models/User')
+        );
     } else if (typeof define == 'function' && define.amd){
         // AMD
-        define(['IntegrationService', 'EventEmitter'], factory);
-    } else if (typeof IntegrationService !== 'undefined' && typeof EventEmitter !== 'undefined'){
+        define(['IntegrationService', 'underscore', 'backbone', 'Models/User'], factory);
+    } else {
         // Browser
-        root.Connector = factory(IntegrationService, EventEmitter);
+        root.Connector = factory(root.IntegrationService, root.underscore, root.Backbone, root.Models.User);
     }
-}(this, function (IntegrationService, EventEmitter){
+}(this, function (IntegrationService, _, Backbone, User){
     'use strict';
     var logger = Logger.get('Roster');
 
-    IntegrationService.addModule('Roster', extend({}, EventEmitter, {
+    IntegrationService.addModule('Roster', Backbone.Collection.extend({
+        model: User,
 
         _integrationService: null,
         _connection: null,
 
-        initialize: function(IS){
-            logger.info('Initialize');
-
+        constructor: function(IS) {
             this._integrationService = IS;
-            this._connection = this._integrationService.getConnection();
-            this._integrationService.on('collaboration:connected', this._onConnectedCollaboration, this);
+            var args = [];
+            if(arguments.length > 1){
+                args = arguments.slice(1);
+            }
+            Backbone.Collection.apply(this, args);
         },
 
-        _bindEvents: function(){
-            logger.info('_bindEvents');
+        initialize: function(IS){
+            logger.info('initialize');
+
+            this._connection = this._integrationService.getConnection();
+
+            this._integrationService.on('collaboration:connected', this._onConnectedCollaboration, this);
             this._integrationService.on('setroster', this._onSetRoster, this);
             this._integrationService.on('updateuser', this._onUpdateUser, this);
             this._integrationService.on('removeuser', this._onRemoveUser, this);
             this._integrationService.on('adduser', this._onAddUser, this);
-        },
-
-        _roster: null,
-
-        getRoster: function(){
-            return this._roster;
         },
 
         _subscribed: false,
@@ -63,11 +68,6 @@
             if(this._needSubscribe){
                 logger.info('Send subscription');
 
-                if(!this._subscribed){
-                    // if first subscribe
-                    this._bindEvents();
-                }
-
                 this._subscribed = true;
 
                 var message = {
@@ -81,73 +81,55 @@
             }
         },
 
-        _sort: function(){
-            this._roster.sort(function compare(a, b){
-                return a.name.localeCompare(b.name);
-            });
-        },
+        _prepareUser: function(item){
+            var user = _.clone(item);
+            user.location = item.presence.extra.location;
+            user.call = item.presence.extra.call;
+            user.presence = {
+                type: item.presence.type,
+                show: item.presence.show,
+                status: item.presence.status,
+                deviceShow: item.presence.extra['device-show'],
+                until: item.presence.until
+            };
 
-        _find: function(item){
-            var index = -1;
-            for(var i = 0; i < this._roster.length; i++){
-                if(this._roster[i].id == item.id){
-                    index = i;
-                    break;
-                }
-            }
-            return index;
+            return user;
         },
 
         _onConnectedCollaboration: function(){
             this._subscribe();
         },
 
-        _onSetRoster: function(event, roster){
+        _onSetRoster: function(roster){
             logger.info('Received roster:', roster);
-
-            var isFirst = (this._roster === null);
-
-            this._roster = roster;
-            this._sort();
-
-            if(isFirst){
-                this.trigger('ready', this);
+            var newRoster = [];
+            for(var i = 0; i < roster.length; i++){
+                newRoster.push(this._prepareUser(roster[i]));
             }
-
-            this.trigger('reset', this._roster);
+            this.reset(newRoster);
         },
 
-        _onUpdateUser: function(event, user){
+        _onUpdateUser: function(user){
             logger.info('Update user:', user);
-            if(user && this._roster.length > 0){
-                var index = this._find(user);
-                if(index >= 0){
-                    this._roster[index] = user;
-                    this.trigger('update', user);
-                }
+            var item = this.get(user.id);
+            if(item){
+                item.set(this._prepareUser(user));
             }
         },
 
-        _onRemoveUser: function(event, user){
+        _onRemoveUser: function(user){
             logger.info('Removed user:', user);
-            if(user && this._roster.length > 0){
-                var index = this._find(user);
-                if(index >= 0){
-                    this._roster.splice(index, 1);
-                    this.trigger('delete', user);
-                }
+            var item = this.get(user.id);
+            if(item){
+                this.remove(item);
             }
         },
 
-        _onAddUser: function(event, user){
+        _onAddUser: function(user){
             logger.info('Added user:', user);
-            if(user){
-                var index = this._find(user);
-                if(index == -1){
-                    this._roster.push(user);
-                    this._sort();
-                    this.trigger('add', user);
-                }
+
+            if(!this.get(user.id)){
+                this.add(this._prepareUser(user));
             }
         }
     }));

@@ -5,7 +5,10 @@
 <title>Example Integration Service</title>
 
 <script type="text/javascript" src="./dist/Wildix.IntegrationService.js"></script>
-<script type="text/javascript" src="./node_modules/jquery/dist/jquery.min.js"></script>
+<script
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script>
 
 <script type="text/javascript">
 
@@ -41,33 +44,37 @@ WIService.on('collaboration:disconnected', function(){
 
 
 
-
-
-WIService.Roster.on('ready', function(){
+WIService.Roster.on('all', function(a, b, c, d){
     // fired when collaboration connected and module Roster first received roster
-    console.log('Roster ready');
+    console.log('Roster =========', a, b, c, d);
 });
 
-WIService.Roster.on('reset', function(event, roster){
+
+WIService.Roster.on('reset', function(roster){
     // fired when module Roster received all roster items from Collaboration
-    console.log('received new roster', roster);
+    console.log('Received new roster', roster);
 });
 
-WIService.Roster.on('update', function(event, user){
+WIService.Roster.on('update', function(user){
     // fired when updated user or presence
-    console.log('updated user', user);
+    console.log('Updated user', user);
 });
 
-WIService.Roster.on('delete', function(event, user){
+WIService.Roster.on('remove', function(user){
     // fired when deleted user
-    console.log('removed user', user);
+    console.log('Removed user', user);
 });
 
-WIService.Roster.on('add', function(event, user){
+WIService.Roster.on('add', function(user){
     // fired when added user
-    console.log('added user', user);
+    console.log('Added user', user);
 });
 
+
+WIService.Telephony.on('all', function(a, b, c, d){
+    // fired when added user
+    console.log('Telephony =========', a, b, c, d);
+});
 
 // make subscription to roster data
 WIService.Roster.subscribe();
