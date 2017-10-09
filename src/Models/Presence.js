@@ -1,5 +1,34 @@
 /**
+ * Represents a presence of a User.<br />
+ * Used in user model and can be received from {@link Wildix.Models.User}.
+ *
  * @class Presence
+ * @memberof Wildix.Models
+ * @extends external:Backbone.Model
+ *
+ * @property type {string} Type status
+ *                        <ul>
+ *                            <li>available</li>
+ *                            <li>unavailable</li>
+ *                        </ul>
+ * @property show {string} Main status
+ *                              <ul>
+ *                                  <li>available</li>
+ *                                  <li>dnd</li>
+ *                                  <li>away</li>
+ *                                  <li>mur</li>
+ *                              </ul>
+ * @property status {string} Status message.
+ * @property deviceShow {string} Device state
+ *                              <ul>
+ *                                  <li>ringing</li>
+ *                                  <li>talking</li>
+ *                                  <li>rt</li>
+ *                                  <li>registered</li>
+ *                              </ul>
+ * @property until {string} Expire date - a date when this presence are valid.
+ * @example
+ * user.get('presence').get(property)
  */
 
 (function universalModuleDefinition(root, factory){

@@ -17,7 +17,7 @@ module.exports = {
         "space-before-function-paren": ["error", {"anonymous": "ignore", "named": "never", "asyncArrow": "ignore"}],
 
 
-        "valid-jsdoc": ["error", {"requireReturn": true}],
+        "valid-jsdoc": ["error", {"requireReturn": true, "requireReturnDescription": false}],
         "default-case": ["error"],
         "no-else-return": ["error"],
         "no-eq-null": ["error"],

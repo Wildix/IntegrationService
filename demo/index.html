@@ -1,0 +1,160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Example Integration Service</title>
+
+<script type="text/javascript" src="../dist/Wildix.IntegrationService.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
+<script type="text/javascript">
+
+var WIService = new Wildix.IntegrationService({
+    name: "MySomeApplication",
+    version: '1.0.0'
+});
+
+
+WIService.on('collaboration:connected', function(IntegrationService){
+    // when detected that the collaboration is connected to WIService
+    console.log('Collaboration connected', IntegrationService);
+});
+
+WIService.on('collaboration:disconnected', function(IntegrationService){
+    // when detected that the collaboration is disconnected from WIService
+    console.log('Collaboration disconnected', IntegrationService);
+});
+
+WIService.on('ready', function(IntegrationService){
+    // when connected and received collaboration status
+    console.log('Collaboration ready', IntegrationService);
+});
+
+WIService.on('connection:error', function(IntegrationService){
+    // when could not connect to WIService
+    console.warn('Failed connect to WIService', IntegrationService);
+});
+
+
+
+
+WIService.Roster.on('all', function(eventName, userOrCollection, b, c){
+    // Called when the Roster plugin generates any event
+    console.log('Roster event:', eventName, userOrCollection, b, c);
+});
+
+WIService.Roster.on('reset', function(userCollection, options){
+    // when module Roster received all users items from Collaboration
+    console.log('Received users:', userCollection, options);
+});
+
+WIService.Roster.on('add', function(user, userCollection, options){
+    // when module Roster received new user item from Collaboration
+    console.log('New user:', user, userCollection, options);
+});
+
+WIService.Roster.on('remove', function(user, userCollection, options){
+    // when a user removed .
+    console.log('Removed user:', user, userCollection, options);
+});
+
+WIService.Roster.on('update', function(userCollection, options){
+    // single event triggered after any number of users have been added or removed from a collection.
+    console.log('Updated user collection:', userCollection, options);
+});
+
+WIService.Roster.on('change:presence', function(user, presence, options){
+    // when a user presence attribute have changed.
+    console.log('Updated user presence attribute:', user, presence, options);
+});
+
+WIService.Roster.on('change', function(user, options){
+    // when a user attributes have changed.
+    console.log('Updated call attributes:', user, options);
+});
+
+
+
+
+WIService.Telephony.on('all', function(eventName, callOrCollection, b, c){
+    // when the Telephony plugin generates any event
+    console.log('Telephony event:', eventName, callOrCollection, b, c);
+});
+
+WIService.Telephony.on('reset', function(callCollection, options){
+    // when module Telephony received all calls items from Collaboration
+    console.log('Received calls:', callCollection, options);
+});
+
+WIService.Telephony.on('add', function(call, callCollection, options){
+    // when module Telephony received call items from Collaboration
+    console.log('New call:', call, callCollection, options);
+});
+
+WIService.Telephony.on('remove', function(call, callCollection, options){
+    // when a call removed .
+    console.log('Removed call:', call, callCollection, options);
+});
+
+WIService.Telephony.on('update', function(callCollection, options){
+    // single event triggered after any number of calls have been added or removed from a collection.
+    console.log('Updated call collection:', callCollection, options);
+});
+
+WIService.Telephony.on('change:state', function(call, value, options){
+    // when a call state attribute have changed.
+    console.log('Updated call state attribute:', call, value, options);
+});
+
+WIService.Telephony.on('change', function(call, options){
+    // when a call attributes have changed.
+    console.log('Updated call attributes:', call, options);
+});
+
+
+
+// make subscription to roster data
+WIService.Roster.subscribe();
+WIService.Telephony.subscribe();
+
+
+
+//GUI processing
+$(document).ready(function(){
+    $('#call').on('click', function(){
+        var status = WIService.getCollaborationStatus();
+        if(status == 'connected'){
+            // make call
+            if($('#number').val() != ''){
+                WIService.Telephony.call($('#number').val());
+            }
+        }else{
+            console.warn('Collaboration not running');
+        }
+    });
+
+    $('#chat').on('click', function(){
+        var status = WIService.getCollaborationStatus();
+        if(status == 'connected'){
+            // open chat
+            if($('#number').val() != ''){
+                WIService.Chat.open($('#number').val());
+            }
+        }else{
+            console.warn('Collaboration not running');
+        }
+    });
+});
+
+
+
+
+
+</script>
+</head>
+<body>
+
+<input type="text" id="number"> <input type="button" id="call" value="Call" /> <input type="button" id="chat" value="Chat" />
+
+</body>
+</html>

@@ -2,7 +2,7 @@
   "name": "WildixIntegrationService",
   "description": "IntegrationService for Wildix PBX applications.",
   "homepage": "https://github.com/Slawutich/WebAPI",
-  "version": "0.0.1",
+  "version": "1.1.0",
   "main": "src/index.js",
   "keywords": [
     "Wildix",
@@ -36,7 +36,14 @@
     "backbone": "^1.3.3"
   },
   "devDependencies": {
-    "jsdoc": "^3.5.4",
+    "jsdoc": "^3.5.5",
+    "jsdoc-template-argon": "^0.2.0-dev",
+    "tui-jsdoc-template": "^1.2.2",
+    "docdash": "^0.4.0",
+    "minami": "^1.2.3",
+    "postman-jsdoc-theme": "^0.0.3",
+    "jaguarjs-jsdoc": "^1.1.0",
+
     "eslint": "^3.19.0",
     "eslint-config-standard": "^10.2.1",
     "eslint-plugin-promise": "^3.5.0",
@@ -52,14 +59,13 @@
     "precommit-hook": "^3.0.0"
   },
   "scripts": {
+    "doc": "jsdoc -c .jsdoc.js src/",
     "check": "npm run check:jshint && npm run check:eslint",
     "check:jshint": "jshint src/",
     "check:eslint": "eslint src/ ",
     "build": "webpack --display-error-details --display-max-modules 999",
     "watch:build": "webpack --watch  --display-error-details --display-max-modules 999",
-    "prepublish": "mkdir -p dist",
-    "lint": "jshint .",
-    "validate": "npm ls"
+    "prepublish": "mkdir -p dist"
   },
   "pre-commit": [
     "check"

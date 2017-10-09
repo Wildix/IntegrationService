@@ -1,7 +1,15 @@
 /**
+ * A plugin that provides Roster functionality.
+ * Instance will be created each time when new {@link Wildix.IntegrationService} instance is created. <br />
+ * Plugin could be accessible thought {@link Wildix.IntegrationService|IntegrationService}
+ * with {@link Wildix.IntegrationService#Roster|Roster} property.
+ *
  * @class Roster
+ * @memberof Wildix
+ * @extends external:Backbone.Collection
+ * @example
+ * WIService.Roster.subscribe();
  */
-
 (function universalModuleDefinition(root, factory){
     if (typeof exports == 'object'){
         // CommonJS
@@ -16,7 +24,7 @@
         define(['IntegrationService', 'underscore', 'backbone', 'Models/User'], factory);
     } else {
         // Browser
-        root.Connector = factory(root.IntegrationService, root.underscore, root.Backbone, root.Models.User);
+        factory(root.IntegrationService, root.underscore, root.Backbone, root.Models.User);
     }
 }(this, function (IntegrationService, _, Backbone, User){
     'use strict';
@@ -50,11 +58,25 @@
         },
 
         _subscribed: false,
+
+        /**
+         * Returns true if subscribed to a roster event.
+         *
+         * @memberof Wildix.Roster#
+         * @return {boolean}
+         */
         isSubscribed: function(){
             return this._subscribed;
         },
 
         _needSubscribe: false,
+
+        /**
+         * Initializes a subscription to roster events
+         *
+         * @memberof Wildix.Roster#
+         * @return {void}
+         */
         subscribe: function(){
             this._needSubscribe = true;
             if(this._integrationService.isReady()){

@@ -1,5 +1,12 @@
 /**
+ * A plugin that provides Chat functionality.
+ * Instance will be created each time when new {@link Wildix.IntegrationService} instance is created. <br />
+ * Plugin could be accessible thought {@link Wildix.IntegrationService|IntegrationService}
+ * with {@link Wildix.IntegrationService#Chat|Chat} property.
+ *
  * @class Chat
+ * @memberof Wildix
+ * @extends external:Backbone.Events
  */
 
 (function universalModuleDefinition(root, factory){
@@ -11,7 +18,7 @@
         define(['IntegrationService', 'underscore', 'backbone'], factory);
     } else if (typeof EventEmitter !== 'undefined'){
         // Browser
-        root.Connector = factory(root.IntegrationService, root.underscore, root.Backbone);
+        factory(root.IntegrationService, root.underscore, root.Backbone);
     }
 }(this, function (IntegrationService, _, Backbone){
     'use strict';
@@ -29,6 +36,16 @@
             this._connection = this._integrationService.getConnection();
         },
 
+        /**
+         * Initiates a open chat to a specified extension.
+         *
+         * @example
+         * WIService.Chat.open('101');
+         *
+         * @memberof Wildix.Chat#
+         * @param {string} number  A number to open chat.
+         * @return {void}
+         */
         open: function(number){
             var message = {
                 'msgdata': {

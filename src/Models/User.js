@@ -1,7 +1,23 @@
 /**
+ * Represents a user that are participated in Wildix PBX.
+ *
  * @class User
+ * @memberof Wildix.Models
+ * @extends external:Backbone.Model
+ *
+ * @property email {string}
+ * @property extension {string} Can be empty when user doesn't have extension, for example user from Kite service.
+ * @property faxNumber {string}
+ * @property id {string}
+ * @property language {string}
+ * @property mobilePhone {string}
+ * @property name {string}
+ * @property officePhone {string}
+ * @property picture {string} Url to the picture of the user
+ * @property presence {Wildix.Models.Presence}
+ * @property location {Wildix.Models.Location}
+ * @property call {Wildix.Models.Call}
  */
-
 (function universalModuleDefinition(root, factory){
     if (typeof exports == 'object'){
         // CommonJS

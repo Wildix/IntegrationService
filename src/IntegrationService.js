@@ -1,7 +1,18 @@
 /**
+ * Represents a Wildix IntegrationService instance
+ *
  * @class IntegrationService
+ * @memberof Wildix
+ * @extends external:Backbone.Events
+ *
+ * @param options {Object} options
+ *
+ * @example
+ * var WIService = new Wildix.IntegrationService({
+ *   name: "MySomeApplication",
+ *   version: '1.0.0'
+ * }
  */
-
 (function universalModuleDefinition(root, factory){
     if (typeof exports == 'object'){
         // CommonJS
@@ -17,8 +28,8 @@
     'use strict';
     // enable all logs
     // Wildix.IntegrationService.Logger.setLevel(Wildix.IntegrationService.Logger.DEBUG)
-    Logger.useDefaults();
-    Logger.setLevel(Logger.DEBUG);  // Global logging level.
+    // Logger.useDefaults();
+    // Logger.setLevel(Logger.DEBUG);  // Global logging level.
 
     var logger = Logger.get('IntegrationService');
 
@@ -91,7 +102,37 @@
             this.getConnection().on('error', this._onConnectionError, this);
         },
 
-        getConnection: function(port) {
+        /**
+         * Plugin that provides Roster functionality
+         *
+         * @memberof Wildix.IntegrationService#
+         * @type {Wildix.Roster}
+         */
+        Roster: null,
+
+        /**
+         * Plugin that provides Telephony functionality
+         *
+         * @memberof Wildix.IntegrationService#
+         * @type {Wildix.Telephony}
+         */
+        Telephony: null,
+
+        /**
+         * Plugin that provides Chat functionality
+         *
+         * @memberof Wildix.IntegrationService#
+         * @type {Wildix.Chat}
+         */
+        Chat: null,
+
+        /**
+         * Return connection to WIService.
+         *
+         * @memberof Wildix.IntegrationService#
+         * @return {Wildix.Connector}
+         */
+        getConnection: function() {
             if(this._connection === null){
                 this._connection = new Connector(this._connectionOptions);
                 this._connection.setAuthData(this._options);
@@ -100,12 +141,19 @@
         },
 
         _ready: false,
+
+        /**
+         * Return true if fully initialized connection with WIService.
+         *
+         * @memberof Wildix.IntegrationService#
+         * @return {boolean}
+         */
         isReady: function(){
             return this._ready;
         },
 
         _onReady: function(){
-            this.getVersion();
+            this._getVersion();
         },
 
         _countCollaborationss: 0,
@@ -144,19 +192,24 @@
             this.trigger('connection:error', this);
         },
 
-        refresh: function(){
-            this.getConnection().refresh();
-        },
-
-        open: function(){
-            this.getConnection().open();
-        },
-
+        /**
+         * Return true if IntegrationService connected to the WIService.
+         *
+         * @memberof Wildix.IntegrationService#
+         * @return {boolean}
+         */
         isConnected: function(){
             return this.getConnection().isConnected();
         },
 
         _collaborationStatus: null,
+
+        /**
+         * Return collaboration status or null if IntegrationService not connected to the WIService.
+         *
+         * @memberof Wildix.IntegrationService#
+         * @return {string|null}
+         */
         getCollaborationStatus: function(){
             if(!this.isConnected()){
                 return null;
@@ -174,16 +227,25 @@
                     if(connected.collaboration && connected.collaboration.length > 0){
                         this._collaborationStatus = 'connected';
                         this._countCollaborations = response.connected.collaboration.length;
+                        this.trigger('collaboration:' + this._collaborationStatus, this);
                         this._ready = true;
                         this.trigger('ready', this);
-                        this.trigger('collaboration:' + this._collaborationStatus, this);
                     }
                 }.bind(this));
             }
             return this._collaborationStatus;
         },
 
-        getVersion: function(name, force){
+        /**
+         * Return collaboration version.
+         *
+         * @memberof Wildix.IntegrationService#
+         * @private
+         * @param {string} name of app
+         * @param {bollean} force request version
+         * @return {string}
+         */
+        _getVersion: function(name, force){
             if(!this.isConnected()){
                 return null;
             }
@@ -215,3 +277,50 @@
 
     return IntegrationService;
 }));
+
+/**
+ * Indicates that could not connect to WIService.
+ *
+ * @event Wildix.IntegrationService#connection:error
+ * @property IntegrationService {Wildix.IntegrationService}
+ * @example
+ * WIService.on('connection:error', function(){
+ *   console.warn('WIService not installed or is not running');
+ * });
+ */
+
+/**
+ * Indicates that collaboration is connected and IntegrationService received status.
+ *
+ * @event Wildix.IntegrationService#ready
+ * @property IntegrationService {Wildix.IntegrationService}
+ * @example
+ * WIService.on('ready', function(){
+ *   var status = WIService.getCollaborationStatus();
+ *   if(status == 'disconnected'){
+ *       console.warn('Collaboration not running');
+ *   }
+ * });
+ */
+
+/**
+ * Indicates that Collaboration is connected to WIService.
+ *
+ * @event Wildix.IntegrationService#collaboration:connected
+ * @property IntegrationService {Wildix.IntegrationService}
+ * @example
+ * WIService.on('collaboration:connected', function(){
+ *   console.log('Collaboration connected');
+ * });
+ */
+
+/**
+ * Indicates that Collaboration is disconnected from the WIService.
+ *
+ * @event Wildix.IntegrationService#collaboration:disconnected
+ * @property IntegrationService {Wildix.IntegrationService}
+ * @example
+ * WIService.on('collaboration:disconnected', function(){
+ *   console.log('Collaboration disconnected');
+ * });
+ */

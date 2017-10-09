@@ -1,5 +1,27 @@
 /**
+ * Represents call information.<br />
+ * Used in user model and can be received from {@link Wildix.Models.User}.<br />
+ * Used in Telephony plugin and can be received from {@link Wildix.Telephony}.
+ *
  * @class Call
+ * @memberof Wildix.Models
+ * @extends external:Backbone.Model
+ *
+ * @property name {string} name of the connected call.
+ * @property number {string} number of the connected call.
+ * @property channel {string}
+ * @property destination {string}
+ * @property destinationType {string}
+ * @property direction {string}
+ * @property duration {string}
+ * @property id {string}
+ * @property record {string}
+ * @property state {string}
+ * @property type {string}
+ * @example
+ * user.get('call').get(property)
+ * or
+ * call.get(property)
  */
 
 (function universalModuleDefinition(root, factory){

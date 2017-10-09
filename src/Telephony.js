@@ -1,7 +1,15 @@
 /**
+ * A plugin that provides Telephony functionality.
+ * Instance will be created each time when new {@link Wildix.IntegrationService} instance is created. <br />
+ * Plugin could be accessible thought {@link Wildix.IntegrationService|IntegrationService}
+ * with {@link Wildix.IntegrationService#Telephony|Telephony} property.
+ *
  * @class Telephony
+ * @memberof Wildix
+ * @extends external:Backbone.Collection
+ * @example
+ * WIService.Telephony.subscribe();
  */
-
 (function universalModuleDefinition(root, factory){
     if (typeof exports == 'object'){
         // CommonJS
@@ -16,7 +24,7 @@
         define(['IntegrationService', 'underscore', 'backbone', 'Models/Call'], factory);
     } else {
         // Browser
-        root.Connector = factory(root.IntegrationService, root.underscore, root.Backbone, root.Models.Call);
+        factory(root.IntegrationService, root.underscore, root.Backbone, root.Models.Call);
     }
 }(this, function (IntegrationService, _, Backbone, Call){
     'use strict';
@@ -37,7 +45,7 @@
             Backbone.Collection.apply(this, args);
         },
 
-        initialize: function(IS){
+        initialize: function(){
             logger.info('Initialize');
 
             this._connection = this._integrationService.getConnection();
@@ -49,6 +57,17 @@
             this._integrationService.on('addcall', this._onAddCall, this);
         },
 
+        /**
+         * Initiates a call to a specified number.
+         *
+         * @example
+         * WIService.Telephony.call('101');
+         *
+         * @memberof Wildix.Telephony#
+         * @param {string} number A number to call.
+         * @param {function} callback Callback function called with result
+         * @return {void}
+         */
         call: function(number, callback){
             var message = {
                 'msgdata': {
@@ -60,11 +79,25 @@
         },
 
         _subscribed: false,
+
+        /**
+         * Returns true if subscribed to a call event.
+         *
+         * @memberof Wildix.Telephony#
+         * @return {boolean}
+         */
         isSubscribed: function(){
             return this._subscribed;
         },
 
         _needSubscribe: false,
+
+        /**
+         * Initializes a subscription to call events
+         *
+         * @memberof Wildix.Telephony#
+         * @return {void}
+         */
         subscribe: function(){
             this._needSubscribe = true;
             if(this._integrationService.isReady()){
@@ -86,7 +119,6 @@
                         'event': 'calls'
                     }
                 };
-
                 this._connection.send(message);
             }
         },

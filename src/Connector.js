@@ -1,5 +1,10 @@
 /**
+ * Provides connectivity to WIService
+ *
  * @class Connector
+ * @memberof Wildix
+ * @extends external:Backbone.Events
+ * @param options {Object} options
  */
 
 (function universalModuleDefinition(root, factory){
@@ -115,11 +120,23 @@
             return false;
         },
 
-        refresh: function(){
+        /**
+         * Initiates reconnection to WIService
+         *
+         * @memberof Wildix.Connector#
+         * @return {void}
+         */
+        reconnect: function(){
             this.getConnection().refresh();
         },
 
-        open: function(){
+        /**
+         * Open connection to the WIService.
+         *
+         * @memberof Wildix.Connector#
+         * @return {void}
+         */
+        connect: function(){
             this.getConnection().open();
         },
 

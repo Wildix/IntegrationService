@@ -1,5 +1,16 @@
 /**
+ * Represents a geographic location of User.<br />
+ * Used in user model and can be received from {@link Wildix.Models.User}.
+ *
  * @class Location
+ * @memberof Wildix.Models
+ * @extends external:Backbone.Model
+ *
+ * @property address {string} Address of this location
+ * @property lat {string} Latitude in degrees
+ * @property lng {string} Longitude in degrees
+ * @example
+ * user.get('location').get(property)
  */
 
 (function universalModuleDefinition(root, factory){
