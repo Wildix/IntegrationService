@@ -13,16 +13,21 @@ Quick start
         version: '1.0.0'
     });
 
-    WIService.Roster.on('all', function(eventName, a, b, c, d){
-        // Called when the Roster plugin generates any event
-        console.log('Roster event:', eventName, a, b, c, d);
+    WIService.Roster.on('all', function(eventName, userOrCollection, b, c){
+        // when the Roster plugin generates any event
+        console.log('Roster event:', eventName, userOrCollection, b, c);
     });
 
-    WIService.Telephony.on('all', function(eventName, a, b, c, d){
-        // Called when the Telephony plugin generates any event
-        console.log('Telephony event:', eventName, a, b, c, d);
+    WIService.Telephony.on('all', function(eventName, callOrCollection, b, c){
+        // when the Telephony plugin generates any event
+        console.log('Telephony event:', eventName, callOrCollection, b, c);
     });
 
     WIService.Roster.subscribe();
     WIService.Telephony.subscribe();
+
+Links
+-----
+
+- Documentation: https://wildix.github.io/IntegrationService/
 

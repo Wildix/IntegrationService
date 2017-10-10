@@ -39,7 +39,7 @@ WIService.on('connection:error', function(IntegrationService){
 
 
 WIService.Roster.on('all', function(eventName, userOrCollection, b, c){
-    // Called when the Roster plugin generates any event
+    // when the Roster plugin generates any event
     console.log('Roster event:', eventName, userOrCollection, b, c);
 });
 
