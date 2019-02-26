@@ -162,6 +162,182 @@ with <a href="Wildix.IntegrationService.html#Telephony">Telephony</a> property.
     
 
     
+    <h4 class="name" id="answer"><span class="type-signature"></span>answer<span class="signature">(channel, callback)</span><span class="type-signature"> &rarr; {void}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Initiates an answer to the call for the specified channel.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>channel</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">A call channel.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Callback function called with result</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">void</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>WIService.Telephony.answer('SIP/108-00000050');</code></pre>
+
+
+
+        
+            
+
+    
+
+    
     <h4 class="name" id="call"><span class="type-signature"></span>call<span class="signature">(number, callback)</span><span class="type-signature"> &rarr; {void}</span></h4>
     
 
@@ -329,6 +505,358 @@ with <a href="Wildix.IntegrationService.html#Telephony">Telephony</a> property.
     <h5>Example</h5>
     
     <pre class="prettyprint"><code>WIService.Telephony.call('101');</code></pre>
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="hangup"><span class="type-signature"></span>hangup<span class="signature">(channel, callback)</span><span class="type-signature"> &rarr; {void}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Initiates a call hangup for the specified channel.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>channel</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">A call channel.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Callback function called with result</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">void</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>WIService.Telephony.hangup('SIP/108-00000050');</code></pre>
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="hold"><span class="type-signature"></span>hold<span class="signature">(channel, callback)</span><span class="type-signature"> &rarr; {void}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Initiates a call hold for the specified channel.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>channel</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">A call channel.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Callback function called with result</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">void</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>WIService.Telephony.hold('SIP/108-00000050');</code></pre>
 
 
 
@@ -531,10 +1059,542 @@ with <a href="Wildix.IntegrationService.html#Telephony">Telephony</a> property.
 
 
         
+            
+
+    
+
+    
+    <h4 class="name" id="unhold"><span class="type-signature"></span>unhold<span class="signature">(channel, callback)</span><span class="type-signature"> &rarr; {void}</span></h4>
     
 
     
 
+
+
+<div class="description">
+    Initiates a call unhold for the specified channel.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>channel</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">A call channel.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Callback function called with result</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">void</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>WIService.Telephony.unhold('SIP/108-00000050');</code></pre>
+
+
+
+        
+    
+
+    
+
+    
+        <h3 class="subsection-title">Events</h3>
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="event:answer">answer</h4>
+    
+
+    
+
+
+
+<div class="description">
+    Indicates that the current user has answered the call.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>WIService.Telephony.on('answer', function (call) {
+   console.log('Answer to the call', call)
+});</code></pre>
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="event:hangup">hangup</h4>
+    
+
+    
+
+
+
+<div class="description">
+    Indicates that someone of the call participants has a hang-up.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>WIService.Telephony.on('hangup', function (call) {
+   console.log('Hangup the call', call)
+});</code></pre>
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="event:hold">hold</h4>
+    
+
+    
+
+
+
+<div class="description">
+    Indicates that the current user has put the call on hold.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>WIService.Telephony.on('hold', function (call) {
+   console.log('Hold the call', call)
+});</code></pre>
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="event:unhold">unhold</h4>
+    
+
+    
+
+
+
+<div class="description">
+    Indicates that the current user has unhold the call.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>WIService.Telephony.on('unhold', function (call) {
+   console.log('Unhold the call', call)
+});</code></pre>
+
+
+
+        
     
 </article>
 
@@ -546,7 +1606,7 @@ with <a href="Wildix.IntegrationService.html#Telephony">Telephony</a> property.
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Externals</h3><ul><li><a href="external-Backbone.html">Backbone</a></li></ul><h3>Classes</h3><ul><li><a href="external-Backbone.Collection.html">Collection</a></li><li><a href="external-Backbone.Events.html">Events</a></li><li><a href="external-Backbone.Model.html">Model</a></li><li><a href="Wildix.Chat.html">Chat</a></li><li><a href="Wildix.Connector.html">Connector</a></li><li><a href="Wildix.IntegrationService.html">IntegrationService</a></li><li><a href="Wildix.Models.Call.html">Call</a></li><li><a href="Wildix.Models.Location.html">Location</a></li><li><a href="Wildix.Models.Presence.html">Presence</a></li><li><a href="Wildix.Models.User.html">User</a></li><li><a href="Wildix.Roster.html">Roster</a></li><li><a href="Wildix.Telephony.html">Telephony</a></li></ul><h3>Events</h3><ul><li><a href="Wildix.IntegrationService.html#event:collaboration:connected">collaboration:connected</a></li><li><a href="Wildix.IntegrationService.html#event:collaboration:disconnected">collaboration:disconnected</a></li><li><a href="Wildix.IntegrationService.html#event:connection:error">connection:error</a></li><li><a href="Wildix.IntegrationService.html#event:ready">ready</a></li></ul><h3>Namespaces</h3><ul><li><a href="Wildix.html">Wildix</a></li><li><a href="Wildix.Models.html">Models</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Externals</h3><ul><li><a href="external-Backbone.html">Backbone</a></li></ul><h3>Classes</h3><ul><li><a href="external-Backbone.Collection.html">Collection</a></li><li><a href="external-Backbone.Events.html">Events</a></li><li><a href="external-Backbone.Model.html">Model</a></li><li><a href="Wildix.Chat.html">Chat</a></li><li><a href="Wildix.Connector.html">Connector</a></li><li><a href="Wildix.IntegrationService.html">IntegrationService</a></li><li><a href="Wildix.Models.Call.html">Call</a></li><li><a href="Wildix.Models.Location.html">Location</a></li><li><a href="Wildix.Models.Presence.html">Presence</a></li><li><a href="Wildix.Models.User.html">User</a></li><li><a href="Wildix.Roster.html">Roster</a></li><li><a href="Wildix.Telephony.html">Telephony</a></li></ul><h3>Events</h3><ul><li><a href="Wildix.IntegrationService.html#event:collaboration:connected">collaboration:connected</a></li><li><a href="Wildix.IntegrationService.html#event:collaboration:disconnected">collaboration:disconnected</a></li><li><a href="Wildix.IntegrationService.html#event:connection:error">connection:error</a></li><li><a href="Wildix.IntegrationService.html#event:ready">ready</a></li><li><a href="Wildix.Telephony.html#event:answer">answer</a></li><li><a href="Wildix.Telephony.html#event:hangup">hangup</a></li><li><a href="Wildix.Telephony.html#event:hold">hold</a></li><li><a href="Wildix.Telephony.html#event:unhold">unhold</a></li></ul><h3>Namespaces</h3><ul><li><a href="Wildix.html">Wildix</a></li><li><a href="Wildix.Models.html">Models</a></li></ul>
 </nav>
 
 <br class="clear">

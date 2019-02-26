@@ -51,18 +51,20 @@
     version: '1.0.0'
 });
 
-WIService.Roster.on('all', function(eventName, a, b, c, d){
-    // Called when the Roster plugin generates any event
-    console.log('Roster event:', eventName, a, b, c, d);
+WIService.Roster.on('all', function(eventName, userOrCollection, b, c){
+    // when the Roster plugin generates any event
+    console.log('Roster event:', eventName, userOrCollection, b, c);
 });
 
-WIService.Telephony.on('all', function(eventName, a, b, c, d){
-    // Called when the Telephony plugin generates any event
-    console.log('Telephony event:', eventName, a, b, c, d);
+WIService.Telephony.on('all', function(eventName, callOrCollection, b, c){
+    // when the Telephony plugin generates any event
+    console.log('Telephony event:', eventName, callOrCollection, b, c);
 });
 
 WIService.Roster.subscribe();
-WIService.Telephony.subscribe();</code></pre></article>
+WIService.Telephony.subscribe();</code></pre><h2>Links</h2><ul>
+<li>Documentation: https://wildix.github.io/IntegrationService/</li>
+</ul></article>
     </section>
 
 
@@ -73,7 +75,7 @@ WIService.Telephony.subscribe();</code></pre></article>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Externals</h3><ul><li><a href="external-Backbone.html">Backbone</a></li></ul><h3>Classes</h3><ul><li><a href="external-Backbone.Collection.html">Collection</a></li><li><a href="external-Backbone.Events.html">Events</a></li><li><a href="external-Backbone.Model.html">Model</a></li><li><a href="Wildix.Chat.html">Chat</a></li><li><a href="Wildix.Connector.html">Connector</a></li><li><a href="Wildix.IntegrationService.html">IntegrationService</a></li><li><a href="Wildix.Models.Call.html">Call</a></li><li><a href="Wildix.Models.Location.html">Location</a></li><li><a href="Wildix.Models.Presence.html">Presence</a></li><li><a href="Wildix.Models.User.html">User</a></li><li><a href="Wildix.Roster.html">Roster</a></li><li><a href="Wildix.Telephony.html">Telephony</a></li></ul><h3>Events</h3><ul><li><a href="Wildix.IntegrationService.html#event:collaboration:connected">collaboration:connected</a></li><li><a href="Wildix.IntegrationService.html#event:collaboration:disconnected">collaboration:disconnected</a></li><li><a href="Wildix.IntegrationService.html#event:connection:error">connection:error</a></li><li><a href="Wildix.IntegrationService.html#event:ready">ready</a></li></ul><h3>Namespaces</h3><ul><li><a href="Wildix.html">Wildix</a></li><li><a href="Wildix.Models.html">Models</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Externals</h3><ul><li><a href="external-Backbone.html">Backbone</a></li></ul><h3>Classes</h3><ul><li><a href="external-Backbone.Collection.html">Collection</a></li><li><a href="external-Backbone.Events.html">Events</a></li><li><a href="external-Backbone.Model.html">Model</a></li><li><a href="Wildix.Chat.html">Chat</a></li><li><a href="Wildix.Connector.html">Connector</a></li><li><a href="Wildix.IntegrationService.html">IntegrationService</a></li><li><a href="Wildix.Models.Call.html">Call</a></li><li><a href="Wildix.Models.Location.html">Location</a></li><li><a href="Wildix.Models.Presence.html">Presence</a></li><li><a href="Wildix.Models.User.html">User</a></li><li><a href="Wildix.Roster.html">Roster</a></li><li><a href="Wildix.Telephony.html">Telephony</a></li></ul><h3>Events</h3><ul><li><a href="Wildix.IntegrationService.html#event:collaboration:connected">collaboration:connected</a></li><li><a href="Wildix.IntegrationService.html#event:collaboration:disconnected">collaboration:disconnected</a></li><li><a href="Wildix.IntegrationService.html#event:connection:error">connection:error</a></li><li><a href="Wildix.IntegrationService.html#event:ready">ready</a></li><li><a href="Wildix.Telephony.html#event:answer">answer</a></li><li><a href="Wildix.Telephony.html#event:hangup">hangup</a></li><li><a href="Wildix.Telephony.html#event:hold">hold</a></li><li><a href="Wildix.Telephony.html#event:unhold">unhold</a></li></ul><h3>Namespaces</h3><ul><li><a href="Wildix.html">Wildix</a></li><li><a href="Wildix.Models.html">Models</a></li></ul>
 </nav>
 
 <br class="clear">

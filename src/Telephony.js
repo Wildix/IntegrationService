@@ -69,12 +69,76 @@
          * @return {void}
          */
         call: function(number, callback){
+            this._sendMessage('call', {'number': number}, callback);
+        },
+
+        /**
+         * Initiates an answer to the call for the specified channel.
+         *
+         * @example
+         * WIService.Telephony.answer('SIP/108-00000050');
+         *
+         * @memberof Wildix.Telephony#
+         * @param {string} channel A call channel.
+         * @param {function} callback Callback function called with result
+         * @return {void}
+         */
+        answer: function(channel, callback){
+            this._sendMessage('answer', {'channel': channel}, callback);
+        },
+
+        /**
+         * Initiates a call hangup for the specified channel.
+         *
+         * @example
+         * WIService.Telephony.hangup('SIP/108-00000050');
+         *
+         * @memberof Wildix.Telephony#
+         * @param {string} channel A call channel.
+         * @param {function} callback Callback function called with result
+         * @return {void}
+         */
+        hangup: function(channel, callback){
+            this._sendMessage('hangup', {'channel': channel}, callback);
+        },
+
+        /**
+         * Initiates a call hold for the specified channel.
+         *
+         * @example
+         * WIService.Telephony.hold('SIP/108-00000050');
+         *
+         * @memberof Wildix.Telephony#
+         * @param {string} channel A call channel.
+         * @param {function} callback Callback function called with result
+         * @return {void}
+         */
+        hold: function(channel, callback){
+            this._sendMessage('hold', {'channel': channel}, callback);
+        },
+
+        /**
+         * Initiates a call unhold for the specified channel.
+         *
+         * @example
+         * WIService.Telephony.unhold('SIP/108-00000050');
+         *
+         * @memberof Wildix.Telephony#
+         * @param {string} channel A call channel.
+         * @param {function} callback Callback function called with result
+         * @return {void}
+         */
+        unhold: function(channel, callback){
+            this._sendMessage('unhold', {'channel': channel}, callback);
+        },
+
+        _sendMessage: function(type, data, callback){
             var message = {
                 'msgdata': {
-                    'type': 'call',
-                    'number': number
+                    'type': type
                 }
             };
+            _.extend(message.msgdata, data);
             this._connection.send(message, callback);
         },
 
@@ -112,14 +176,7 @@
                 logger.info('Send subscription');
 
                 this._subscribed = true;
-
-                var message = {
-                    'msgdata': {
-                        'type': 'subscribe',
-                        'event': 'calls'
-                    }
-                };
-                this._connection.send(message);
+                this._sendMessage('subscribe', {'event': 'calls'});
             }
         },
 
@@ -136,8 +193,23 @@
         _onUpdateCall: function(call){
             logger.info('Update call:', call);
             var item = this.get(call.channel);
-            if(item){
-                item.set(call);
+
+            if (!item) {
+                return;
+            }
+
+            item.set(call);
+
+            if (call.state === 'up') {
+                var previousState = item.previousAttributes().state;
+
+                if (previousState === 'ring' && call.direction === 'incoming') {
+                    this.trigger('answer', call);
+                } else if (previousState === 'hold') {
+                    this.trigger('unhold', call);
+                }
+            } else if (call.state === 'hold') {
+                this.trigger('hold', call);
             }
         },
 
@@ -146,6 +218,7 @@
             var item = this.get(call.channel);
             if(item){
                 this.remove(item);
+                this.trigger('hangup', call);
             }
         },
 
@@ -157,3 +230,43 @@
         }
     }));
 }));
+
+/**
+ * Indicates that the current user has answered the call.
+ *
+ * @event Wildix.Telephony#answer
+ * @example
+ * WIService.Telephony.on('answer', function (call) {
+ *    console.log('Answer to the call', call)
+ * });
+ */
+
+/**
+ * Indicates that the current user has put the call on hold.
+ *
+ * @event Wildix.Telephony#hold
+ * @example
+ * WIService.Telephony.on('hold', function (call) {
+ *    console.log('Hold the call', call)
+ * });
+ */
+
+/**
+ * Indicates that the current user has unhold the call.
+ *
+ * @event Wildix.Telephony#unhold
+ * @example
+ * WIService.Telephony.on('unhold', function (call) {
+ *    console.log('Unhold the call', call)
+ * });
+ */
+
+/**
+ * Indicates that someone of the call participants has a hang-up.
+ *
+ * @event Wildix.Telephony#hangup
+ * @example
+ * WIService.Telephony.on('hangup', function (call) {
+ *    console.log('Hangup the call', call)
+ * });
+ */
